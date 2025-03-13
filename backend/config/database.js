@@ -5,9 +5,11 @@ module.exports = function (mongoose) {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             dbName: 'test',
+            ssl: true,
+            sslValidate: true,
         })
         .then(() => {
             console.log('MongoDB Connected…');
         })
-        .catch(err => console.error(err));
+        .catch(err => console.error('Error connecting to db:', err));
 };

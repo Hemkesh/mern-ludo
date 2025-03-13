@@ -4,7 +4,18 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 const store = new MongoDBStore({
     uri: process.env.CONNECTION_URI,
     collection: 'sessions',
+    ssl: true,
+    sslValidate: true,
+    connectionOptions: {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    }
 });
+
+store.on('error', function(error) {
+    console.error('Session store error:', error);
+});
+
 const sessionMiddleware = session({
     store: store,
     credentials: true,
