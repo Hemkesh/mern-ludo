@@ -37,7 +37,7 @@ function App() {
                     <Route
                         exact
                         path='/'
-                        element={() => {
+                        Component={() => {
                             if (redirect) {
                                 return <Navigate to='/game' />;
                             } else if (playerSocket) {
@@ -49,7 +49,7 @@ function App() {
                     ></Route>
                     <Route
                         path='/login'
-                        element={() => {
+                        Component={() => {
                             if (redirect) {
                                 return <Navigate to='/game' />;
                             } else if (playerSocket) {
@@ -61,7 +61,7 @@ function App() {
                     ></Route>
                     <Route
                         path='/game'
-                        element={() => {
+                        Component={() => {
                             if (playerData) {
                                 return (
                                     <PlayerDataContext.Provider value={playerData}>
