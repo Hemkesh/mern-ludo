@@ -4,6 +4,19 @@
     align-items: center;
     justify-content: center;
     width: 100%;
+    box-sizing: border-box;
+}
+
+.formContainer input {
+    width: 90%;
+    max-width: 300px;
+    box-sizing: border-box;
+}
+
+.formContainer button {
+    margin-top: 10px;
+    width: 90%;
+    max-width: 300px;
 }
 
 .privateContainer {
@@ -12,4 +25,21 @@
     flex-direction: row;
     align-items: center;
     width: 100%;
+    justify-content: center;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+    .formContainer input,
+    .formContainer button {
+        width: 95%;
+        margin: 5px 0;
+    }
+    
+    .privateContainer {
+        margin-left: 0;
+        padding: 10px 0;
+    }
 }

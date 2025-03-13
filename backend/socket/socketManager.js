@@ -3,11 +3,18 @@ const { sessionMiddleware } = require('../config/session');
 const socketManager = {
     io: null,
     initialize(server) {
-        this.io = require('socket.io')(server, {
-            cors: {
-                origin: 'http://localhost:3000',
+        const corsOptions = process.env.NODE_ENV === 'production'
+            ? {
+                origin: process.env.FRONTEND_URL || 'https://your-render-app.onrender.com',
                 credentials: true,
-            },
+              }
+            : {
+                origin: true, // Allow all origins in development
+                credentials: true,
+              };
+              
+        this.io = require('socket.io')(server, {
+            cors: corsOptions,
             allowRequest: (req, callback) => {
                 const fakeRes = {
                     getHeader() {

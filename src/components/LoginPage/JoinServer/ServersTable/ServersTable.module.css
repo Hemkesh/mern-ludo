@@ -41,3 +41,24 @@
 .firstColumn {
     width: 40px;
 }
+
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+    .roomName {
+        max-width: 100px;
+    }
+    
+    .rooms > th, 
+    .rooms > tbody > tr > td {
+        padding: 4px;
+        font-size: 0.9rem;
+    }
+    
+    .lastColumn {
+        width: 60px;
+    }
+    
+    .firstColumn {
+        width: 30px;
+    }
+}
