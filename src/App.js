@@ -13,7 +13,13 @@ function App() {
     const [playerSocket, setPlayerSocket] = useState();
     const [redirect, setRedirect] = useState();
     useEffect(() => {
-        const socket = io(`http://${window.location.hostname}:8080`, { withCredentials: true });
+        // Use the same protocol (http or https) as the current page
+        // and don't specify the port in production
+        const socketUrl = process.env.NODE_ENV === 'production' 
+            ? `${window.location.protocol}//${window.location.host}`
+            : `${window.location.protocol}//${window.location.hostname}:8080`;
+            
+        const socket = io(socketUrl, { withCredentials: true });
         socket.on('player:data', data => {
             data = JSON.parse(data);
             setPlayerData(data);
@@ -31,7 +37,7 @@ function App() {
                     <Route
                         exact
                         path='/'
-                        Component={() => {
+                        element={() => {
                             if (redirect) {
                                 return <Navigate to='/game' />;
                             } else if (playerSocket) {
@@ -43,7 +49,7 @@ function App() {
                     ></Route>
                     <Route
                         path='/login'
-                        Component={() => {
+                        element={() => {
                             if (redirect) {
                                 return <Navigate to='/game' />;
                             } else if (playerSocket) {
@@ -55,7 +61,7 @@ function App() {
                     ></Route>
                     <Route
                         path='/game'
-                        Component={() => {
+                        element={() => {
                             if (playerData) {
                                 return (
                                     <PlayerDataContext.Provider value={playerData}>
