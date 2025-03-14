@@ -9,8 +9,10 @@ const LoginPage = () => {
             <div className={styles.logoContainer}>
                 <img src={logoImage} alt="Hemkesh Ludo" className={styles.logo} />
             </div>
-            <div className={styles.gameOptionsContainer}>
+            <div className={styles.hostGameButtonContainer}>
                 <AddServer />
+            </div>
+            <div className={styles.joinGameContainer}>
                 <JoinServer />
             </div>
         </div>

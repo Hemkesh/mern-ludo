@@ -27,21 +27,23 @@
     object-fit: contain;
 }
 
-.gameOptionsContainer {
+.hostGameButtonContainer {
+    width: 100%;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.joinGameContainer {
     width: 100%;
     max-width: 800px;
-    gap: 30px;
     margin-bottom: 30px;
-    overflow-y: visible;
 }
 
 /* Media query for tablets */
 @media (min-width: 768px) and (max-width: 1024px) {
     .logo {
-        font-size: 2.5rem;
+        max-width: 250px;
     }
 }
 
@@ -57,11 +59,14 @@
     }
     
     .logo {
-        font-size: 2rem;
+        max-width: 220px;
     }
     
-    .gameOptionsContainer {
-        gap: 20px;
+    .hostGameButtonContainer {
+        margin-bottom: 20px;
+    }
+    
+    .joinGameContainer {
         margin-bottom: 20px;
     }
 }

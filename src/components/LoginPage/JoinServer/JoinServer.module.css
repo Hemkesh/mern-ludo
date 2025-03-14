@@ -38,6 +38,6 @@
 /* Media query for mobile devices */
 @media (max-width: 768px) {
     .serversTableContainer {
-        max-height: 350px;
+        max-height: 400px;
     }
 }

@@ -1,7 +1,5 @@
 import React, { useState, useContext } from 'react';
-import Switch from '@mui/material/Switch';
 import { SocketContext } from '../../../App';
-import WindowLayout from '../WindowLayout/WindowLayout';
 import styles from './AddServer.module.css';
 
 // Arrays of common English words for random server name generation
@@ -10,7 +8,6 @@ const secondWords = ['Dragon', 'Tiger', 'Eagle', 'Lion', 'Falcon', 'Wolf', 'Bear
 
 const AddServer = () => {
     const socket = useContext(SocketContext);
-    const [isPrivate, setIsPrivate] = useState(false);
     const [generatedInfo, setGeneratedInfo] = useState(null);
     const [isCreating, setIsCreating] = useState(false);
     const [copyStatus, setCopyStatus] = useState('');
@@ -38,102 +35,106 @@ const AddServer = () => {
         // Store the generated values to display to the user
         setGeneratedInfo({
             name: randomServerName,
-            password: isPrivate ? randomPassword : ''
+            password: randomPassword
         });
         
         // Store the game info in localStorage to use when joining
-        if (isPrivate) {
-            localStorage.setItem('createdGame', JSON.stringify({
-                name: randomServerName,
-                password: randomPassword
-            }));
-        } else {
-            localStorage.setItem('createdGame', JSON.stringify({
-                name: randomServerName,
-                password: ''
-            }));
-        }
+        localStorage.setItem('createdGame', JSON.stringify({
+            name: randomServerName,
+            password: randomPassword
+        }));
         
         socket.emit('room:create', {
             name: randomServerName,
-            password: isPrivate ? randomPassword : '',
-            private: isPrivate,
+            password: randomPassword,
+            private: true,
         });
     };
     
     const handleCopyInvite = () => {
         if (!generatedInfo) return;
         
-        let inviteText = `Join me on Ludo at https://ludo.hemkesh.com\n\nRoom Name: ${generatedInfo.name}`;
+        let inviteText = `Join me on Ludo at https://ludo.hemkesh.com\n\nRoom Name: ${generatedInfo.name}\nPassword: ${generatedInfo.password}`;
         
-        if (isPrivate && generatedInfo.password) {
-            inviteText += `\nPassword: ${generatedInfo.password}`;
-        }
-        
-        navigator.clipboard.writeText(inviteText)
-            .then(() => {
+        // Check if Clipboard API is available
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(inviteText)
+                .then(() => {
+                    setCopyStatus('Copied!');
+                    setTimeout(() => setCopyStatus(''), 2000);
+                })
+                .catch(err => {
+                    console.error('Failed to copy: ', err);
+                    setCopyStatus('Failed to copy');
+                });
+        } else {
+            // Fallback method using textarea
+            const textArea = document.createElement('textarea');
+            textArea.value = inviteText;
+            
+            // Make the textarea out of viewport
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            textArea.style.top = '-999999px';
+            
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            let success = false;
+            try {
+                success = document.execCommand('copy');
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+            }
+            
+            document.body.removeChild(textArea);
+            
+            if (success) {
                 setCopyStatus('Copied!');
                 setTimeout(() => setCopyStatus(''), 2000);
-            })
-            .catch(err => {
-                console.error('Failed to copy: ', err);
-                setCopyStatus('Failed to copy');
-            });
+            } else {
+                setCopyStatus('Copy failed - please copy manually');
+                setTimeout(() => setCopyStatus('Copy Invite Link'), 3000);
+            }
+        }
     };
 
     return (
-        <WindowLayout
-            title='Host A Game'
-            content={
-                <div className={styles.formContainer}>
-                    {!generatedInfo ? (
-                        <>
-                            <div className={styles.privateContainer}>
-                                <label>Private Game</label>
-                                <Switch checked={isPrivate} color='primary' onChange={() => setIsPrivate(!isPrivate)} />
-                            </div>
-                            <p className={styles.infoText}>
-                                {isPrivate ? 
-                                    'A random name and password will be generated for your private game.' : 
-                                    'A random name will be generated for your public game.'}
-                            </p>
-                            <button 
-                                onClick={handleButtonClick} 
-                                className={styles.hostButton}
-                                disabled={isCreating}
-                            >
-                                {isCreating ? 'Creating...' : 'Host Game'}
-                            </button>
-                        </>
-                    ) : (
-                        <div className={styles.gameCreatedContainer}>
-                            <h3 className={styles.successTitle}>Game Created!</h3>
-                            <div className={styles.gameInfoBox}>
-                                <div className={styles.infoRow}>
-                                    <span className={styles.infoLabel}>Server Name:</span>
-                                    <span className={styles.infoValue}>{generatedInfo.name}</span>
-                                </div>
-                                {isPrivate && (
-                                    <div className={styles.infoRow}>
-                                        <span className={styles.infoLabel}>Password:</span>
-                                        <span className={styles.infoValue}>{generatedInfo.password}</span>
-                                    </div>
-                                )}
-                            </div>
-                            <p className={styles.noteText}>
-                                Share this information with players who want to join your game.
-                            </p>
-                            <button 
-                                onClick={handleCopyInvite} 
-                                className={styles.copyButton}
-                            >
-                                {copyStatus || 'Copy Invite Link'}
-                            </button>
+        <div className={styles.hostGameContainer}>
+            {!generatedInfo ? (
+                <button 
+                    onClick={handleButtonClick} 
+                    className={styles.hostButton}
+                    disabled={isCreating}
+                >
+                    {isCreating ? 'Creating...' : 'Host a New Game'}
+                </button>
+            ) : (
+                <div className={styles.gameCreatedContainer}>
+                    <h3 className={styles.successTitle}>Game Created!</h3>
+                    <div className={styles.gameInfoBox}>
+                        <div className={styles.infoRow}>
+                            <span className={styles.infoLabel}>Server Name:</span>
+                            <span className={styles.infoValue}>{generatedInfo.name}</span>
                         </div>
-                    )}
+                        <div className={styles.infoRow}>
+                            <span className={styles.infoLabel}>Password:</span>
+                            <span className={styles.infoValue}>{generatedInfo.password}</span>
+                        </div>
+                    </div>
+                    <p className={styles.noteText}>
+                        Share this information with players who want to join your game.
+                    </p>
+                    <button 
+                        onClick={handleCopyInvite} 
+                        className={styles.copyButton}
+                    >
+                        {copyStatus || 'Copy Invite Link'}
+                    </button>
                 </div>
-            }
-        />
+            )}
+        </div>
     );
 };
 
