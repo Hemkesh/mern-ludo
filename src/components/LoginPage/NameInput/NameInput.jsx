@@ -4,10 +4,28 @@ import useInput from '../../../hooks/useInput';
 import useKeyPress from '../../../hooks/useKeyPress';
 import styles from './NameInput.module.css';
 
-const NameInput = ({ isRoomPrivate, roomId }) => {
+const NameInput = ({ isRoomPrivate, roomId, room }) => {
     const socket = useContext(SocketContext);
     const nickname = useInput('');
-    const password = useInput('');
+    
+    // Get the created game info from localStorage
+    const getCreatedGamePassword = () => {
+        if (isRoomPrivate && room) {
+            try {
+                const createdGameInfo = JSON.parse(localStorage.getItem('createdGame'));
+                if (createdGameInfo && createdGameInfo.name === room.name) {
+                    return createdGameInfo.password;
+                }
+            } catch (error) {
+                console.error('Error parsing created game info:', error);
+            }
+        }
+        return '';
+    };
+    
+    // Initialize password with the value from localStorage if it's the user's created game
+    const initialPassword = getCreatedGamePassword();
+    const password = useInput(initialPassword);
     const [isPasswordWrong, setIsPasswordWrong] = useState(false);
 
     const handleButtonClick = () => {
@@ -29,7 +47,8 @@ const NameInput = ({ isRoomPrivate, roomId }) => {
                 <input
                     placeholder='Room password'
                     type='text'
-                    {...password}
+                    value={password.value}
+                    onChange={password.onChange}
                     style={{ backgroundColor: isPasswordWrong ? 'red' : null }}
                 />
             ) : null}

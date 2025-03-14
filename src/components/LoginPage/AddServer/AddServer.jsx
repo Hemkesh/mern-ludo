@@ -41,6 +41,19 @@ const AddServer = () => {
             password: isPrivate ? randomPassword : ''
         });
         
+        // Store the game info in localStorage to use when joining
+        if (isPrivate) {
+            localStorage.setItem('createdGame', JSON.stringify({
+                name: randomServerName,
+                password: randomPassword
+            }));
+        } else {
+            localStorage.setItem('createdGame', JSON.stringify({
+                name: randomServerName,
+                password: ''
+            }));
+        }
+        
         socket.emit('room:create', {
             name: randomServerName,
             password: isPrivate ? randomPassword : '',

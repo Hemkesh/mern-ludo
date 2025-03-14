@@ -57,7 +57,7 @@ const JoinServer = () => {
             />
             {joining ? (
                 <Overlay handleOverlayClose={() => setJoining(false)}>
-                    <NameInput roomId={clickedRoom._id} isRoomPrivate={clickedRoom.private} />
+                    <NameInput roomId={clickedRoom._id} isRoomPrivate={clickedRoom.private} room={clickedRoom} />
                 </Overlay>
             ) : null}
         </>
