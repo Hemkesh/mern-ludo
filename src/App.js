@@ -27,6 +27,14 @@ function App() {
                 setRedirect(true);
             }
         });
+        
+        socket.on('redirect', () => {
+            console.log('Received redirect event from server');
+            setPlayerData(null);
+            setRedirect(false);
+            window.location.href = '/login';
+        });
+        
         setPlayerSocket(socket);
     }, []);
 
