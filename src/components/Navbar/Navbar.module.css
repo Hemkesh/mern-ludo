@@ -11,7 +11,7 @@
     display: flex;
     align-items: center;
     flex-direction: row;
-    width: 230px;
+    /* width: 230px; */
     /* padding: 10px 15px; */
     border-radius: 12px;
     backdrop-filter: blur(5px);
@@ -20,10 +20,17 @@
     pointer-events: auto;
 }
 
+.playerContent {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+}
+
 /* Red player - top left */
 .red {
     top: -60px;
-    left: 0px;
+    left: 10px;
     background: linear-gradient(to right, rgba(255, 59, 48, 0.7), rgba(255, 59, 48, 0.5));
     border-left: 4px solid #ff3b30;
     z-index: 4;
@@ -32,7 +39,7 @@
 /* Yellow player - top right */
 .yellow {
     top: -60px;
-    right: 0px;
+    right: 10px;
     flex-flow: row-reverse;
     background: linear-gradient(to left, rgba(255, 204, 0, 0.7), rgba(255, 204, 0, 0.5));
     border-right: 4px solid #ffcc00;
@@ -42,7 +49,7 @@
 /* Blue player - bottom left */
 .blue {
     bottom: -60px;
-    left: 0px;
+    left: 10px;
     background: linear-gradient(to right, rgba(0, 122, 255, 0.7), rgba(0, 122, 255, 0.5));
     border-left: 4px solid #007aff;
     z-index: 2;
@@ -51,7 +58,7 @@
 /* Green player - bottom right */
 .green {
     bottom: -60px;
-    right: 0px;
+    right: 10px;
     flex-flow: row-reverse;
     background: linear-gradient(to left, rgba(52, 199, 89, 0.7), rgba(52, 199, 89, 0.5));
     border-right: 4px solid #34c759;

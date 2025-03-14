@@ -1,29 +1,48 @@
 .container {
+    position: absolute;
     width: 50px;
     height: 50px;
-    position: relative;
     perspective: 1000px;
+    z-index: 10;
 }
 
-.container > img {
+/* Player-specific positioning */
+.red {
+    left: 15px; /* Overlay on the avatar for the red player */
+}
+
+.yellow {
+    right: 15px; /* Overlay on the avatar for yellow player (right side) */
+}
+
+.blue {
+    left: 15px; /* Overlay on the avatar for blue player */
+}
+
+.green {
+    right: 15px; /* Overlay on the avatar for green player (right side) */
+}
+
+.diceImage {
     width: 100%;
     height: 100%;
     cursor: pointer;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
+    background-color: white;
 }
 
-.container > img:hover {
+.diceImage:hover {
     transform: scale(1.1) rotate(10deg);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
-.container > img:active {
+.diceImage:active {
     transform: scale(0.95);
 }
 
-.container > img[alt="roll"] {
+.rollDice {
     animation: pulse 1.5s infinite ease-in-out;
 }
 

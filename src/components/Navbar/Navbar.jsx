@@ -12,8 +12,10 @@ const Navbar = ({ players, started, time, isReady, rolledNumber, nowMoving, movi
                     className={`${styles.playerContainer} ${styles[PLAYER_COLORS[index]]} ${PLAYER_COLORS[index] === movingPlayer && started ? styles.activePlayer : ''}`} 
                     key={index}
                 >
-                    <NameContainer player={player} time={time} />
-                    {started && !ended ? <Dice playerColor={PLAYER_COLORS[index]} rolledNumber={rolledNumber} nowMoving={nowMoving} movingPlayer={movingPlayer} /> : null}
+                    <div className={styles.playerContent}>
+                        <NameContainer player={player} time={time} />
+                        {started && !ended ? <Dice playerColor={PLAYER_COLORS[index]} rolledNumber={rolledNumber} nowMoving={nowMoving} movingPlayer={movingPlayer} /> : null}
+                    </div>
                 </div>
             ))}
         </div>

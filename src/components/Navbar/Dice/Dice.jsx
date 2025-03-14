@@ -13,14 +13,28 @@ const Dice = ({ rolledNumber, nowMoving, playerColor, movingPlayer }) => {
     const isCurrentPlayer = movingPlayer === playerColor;
     const hasRolledNumber = rolledNumber !== null && rolledNumber !== undefined;
 
+    if (!isCurrentPlayer) {
+        return null;
+    }
+
+    // Determine position class based on player color
+    const positionClass = styles[playerColor] || '';
+
     return (
-        <div className={styles.container}>
-            {isCurrentPlayer ? (
-                hasRolledNumber ? (
-                    <img src={images[rolledNumber - 1]} alt={rolledNumber} />
-                ) : nowMoving ? (
-                    <img src={images[6]} className='roll' alt='roll' onClick={handleClick} />
-                ) : null
+        <div className={`${styles.container} ${positionClass}`}>
+            {hasRolledNumber ? (
+                <img 
+                    src={images[rolledNumber - 1]} 
+                    alt={rolledNumber} 
+                    className={styles.diceImage}
+                />
+            ) : nowMoving ? (
+                <img 
+                    src={images[6]} 
+                    className={`${styles.diceImage} ${styles.rollDice}`} 
+                    alt='roll' 
+                    onClick={handleClick} 
+                />
             ) : null}
         </div>
     );
