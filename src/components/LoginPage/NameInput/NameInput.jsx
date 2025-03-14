@@ -69,6 +69,12 @@ const NameInput = ({ isRoomPrivate, roomId, room, onJoinComplete }) => {
         }
     };
 
+    const handleClose = () => {
+        if (onJoinComplete) {
+            onJoinComplete();
+        }
+    };
+
     useKeyPress('Enter', handleButtonClick);
 
     useEffect(() => {
@@ -89,7 +95,16 @@ const NameInput = ({ isRoomPrivate, roomId, room, onJoinComplete }) => {
     }, [socket, onJoinComplete]);
 
     return (
-        <div className={styles.container} style={{ height: isRoomPrivate ? '350px' : '300px' }}>
+        <div className={styles.container} style={{ height: isRoomPrivate ? '420px' : '380px' }}>
+            <div className={styles.headerContainer}>
+                <h2 className={styles.gameNameHeader}>
+                    Joining: {room ? room.name : 'Game'}
+                </h2>
+                <button className={styles.closeButton} onClick={handleClose}>×</button>
+            </div>
+            
+            <div className={styles.divider}></div>
+            
             <AvatarSelector 
                 selectedAvatar={selectedAvatar}
                 onAvatarSelect={handleAvatarSelect}

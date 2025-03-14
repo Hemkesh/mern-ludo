@@ -18,9 +18,23 @@ const LoginPage = () => {
 
     return (
         <div className={styles.container}>
+            {/* Animated background dots are created via CSS */}
+            
+            {/* Floating game pieces */}
+            <div className={`${styles.gamePiece} ${styles.redPiece}`}></div>
+            <div className={`${styles.gamePiece} ${styles.bluePiece}`}></div>
+            <div className={`${styles.gamePiece} ${styles.yellowPiece}`}></div>
+            <div className={`${styles.gamePiece} ${styles.greenPiece}`}></div>
+            
             <div className={styles.logoContainer}>
                 <img src={logoImage} alt="Hemkesh Ludo" className={styles.logo} />
             </div>
+            
+            <div className={styles.gameIntroText}>
+                <h1>Welcome to Ludo!</h1>
+                <p>The classic board game reimagined for online play</p>
+            </div>
+            
             <div className={styles.gameButtonsContainer}>
                 <div className={styles.buttonWrapper}>
                     <AddServer />

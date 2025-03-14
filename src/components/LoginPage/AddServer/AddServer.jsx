@@ -3,6 +3,7 @@ import { SocketContext } from '../../../App';
 import NameInput from '../NameInput/NameInput';
 import Overlay from '../../Overlay/Overlay';
 import styles from './AddServer.module.css';
+import ReactDOM from 'react-dom';
 
 // Arrays of common English words for random server name generation
 const firstWords = ['Happy', 'Brave', 'Swift', 'Mighty', 'Clever', 'Noble', 'Wise', 'Lucky', 'Gentle', 'Bright', 'Grand', 'Jolly', 'Golden', 'Silver', 'Crystal'];
@@ -133,51 +134,54 @@ const AddServer = () => {
     } : null;
 
     return (
-        <div className={styles.hostGameContainer}>
-            {!generatedInfo ? (
-                <button 
-                    onClick={handleButtonClick} 
-                    className={styles.hostButton}
-                    disabled={isCreating}
-                >
-                    {isCreating ? 'Creating...' : 'Host a New Game'}
-                </button>
-            ) : (
-                <div className={styles.gameCreatedContainer}>
-                    <h3 className={styles.successTitle}>Game Created!</h3>
-                    <div className={styles.gameInfoBox}>
-                        <div className={styles.infoRow}>
-                            <span className={styles.infoLabel}>Game Name:</span>
-                            <span className={styles.infoValue}>{generatedInfo.name}</span>
+        <>
+            <div className={styles.hostGameContainer}>
+                {!generatedInfo ? (
+                    <button 
+                        onClick={handleButtonClick} 
+                        className={styles.hostButton}
+                        disabled={isCreating}
+                    >
+                        {isCreating ? 'Creating...' : 'Host a New Game'}
+                    </button>
+                ) : (
+                    <div className={styles.gameCreatedContainer}>
+                        <h3 className={styles.successTitle}>Game Created!</h3>
+                        <div className={styles.gameInfoBox}>
+                            <div className={styles.infoRow}>
+                                <span className={styles.infoLabel}>Game Name:</span>
+                                <span className={styles.infoValue}>{generatedInfo.name}</span>
+                            </div>
+                            <div className={styles.infoRow}>
+                                <span className={styles.infoLabel}>Password:</span>
+                                <span className={styles.infoValue}>{generatedInfo.password}</span>
+                            </div>
                         </div>
-                        <div className={styles.infoRow}>
-                            <span className={styles.infoLabel}>Password:</span>
-                            <span className={styles.infoValue}>{generatedInfo.password}</span>
-                        </div>
-                    </div>
-                    <p className={styles.noteText}>
-                        Share this information with players who want to join your game.
-                    </p>
-                    <div className={styles.buttonsContainer}>
-                        <button 
-                            onClick={handleCopyInvite} 
-                            className={styles.copyButton}
-                        >
-                            {copyStatus || 'Copy Invite Link'}
-                        </button>
-                        {createdRoomId && (
+                        <p className={styles.noteText}>
+                            Share this information with players who want to join your game.
+                        </p>
+                        <div className={styles.buttonsContainer}>
                             <button 
-                                onClick={handleJoinClick} 
-                                className={styles.joinCreatedButton}
+                                onClick={handleCopyInvite} 
+                                className={styles.copyButton}
                             >
-                                Join {generatedInfo.name}
+                                {copyStatus || 'Copy Invite Link'}
                             </button>
-                        )}
+                            {createdRoomId && (
+                                <button 
+                                    onClick={handleJoinClick} 
+                                    className={styles.joinCreatedButton}
+                                >
+                                    Join {generatedInfo.name}
+                                </button>
+                            )}
+                        </div>
                     </div>
-                </div>
-            )}
-
-            {showJoinPopup && roomData && (
+                )}
+            </div>
+            
+            {/* Render the overlay at the document level using ReactDOM.createPortal */}
+            {showJoinPopup && roomData && ReactDOM.createPortal(
                 <Overlay handleOverlayClose={handleCloseJoinPopup}>
                     <NameInput 
                         roomId={roomData._id}
@@ -185,9 +189,10 @@ const AddServer = () => {
                         room={roomData}
                         onJoinComplete={handleCloseJoinPopup}
                     />
-                </Overlay>
+                </Overlay>,
+                document.body
             )}
-        </div>
+        </>
     );
 };
 
