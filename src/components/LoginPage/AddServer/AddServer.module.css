@@ -5,54 +5,59 @@
     justify-content: center;
     width: 100%;
     box-sizing: border-box;
-    padding: 15px 0;
+    padding: 20px 15px;
 }
 
 .formContainer input {
-    width: 90%;
+    width: 100%;
     max-width: 300px;
     box-sizing: border-box;
 }
 
 .formContainer button {
-    margin-top: 10px;
-    width: 90%;
+    margin-top: 15px;
+    width: 100%;
     max-width: 300px;
 }
 
 .hostButton {
-    background-color: #4caf50;
+    background-color: #4a90e2;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     padding: 12px 20px;
     font-size: 16px;
-    font-weight: bold;
+    font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 15px;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .hostButton:hover {
-    background-color: #45a049;
+    background-color: #3a80d2;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .hostButton:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }
 
 .infoText {
     font-size: 14px;
     color: #666;
     text-align: center;
-    margin: 10px 0;
-    width: 90%;
+    margin: 15px 0;
+    width: 100%;
     max-width: 300px;
+    font-family: 'Poppins', sans-serif;
 }
 
 .privateContainer {
-    margin-left: 10px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -60,6 +65,14 @@
     justify-content: center;
     padding: 5px;
     box-sizing: border-box;
+    margin-top: 10px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.privateContainer label {
+    margin-right: 15px;
+    font-weight: 500;
+    color: #2c3e50;
 }
 
 /* Game created success styles */
@@ -68,30 +81,33 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
+    padding: 10px;
 }
 
 .successTitle {
-    color: #4caf50;
-    margin-bottom: 15px;
+    color: #4a90e2;
+    margin-bottom: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
 }
 
 .gameInfoBox {
-    background-color: #f5f5f5;
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
-    padding: 15px;
-    width: 90%;
+    background-color: #f9f9f9;
+    border: 1px solid #eaeaea;
+    border-radius: 10px;
+    padding: 20px;
+    width: 100%;
     max-width: 300px;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .infoRow {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 10px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eaeaea;
 }
 
 .infoRow:last-child {
@@ -101,55 +117,66 @@
 }
 
 .infoLabel {
-    font-weight: bold;
-    color: #333;
+    font-weight: 600;
+    color: #2c3e50;
+    font-family: 'Poppins', sans-serif;
 }
 
 .infoValue {
-    font-family: monospace;
+    font-family: 'Poppins', sans-serif;
     background-color: #ffffff;
-    padding: 3px 8px;
-    border-radius: 3px;
-    border: 1px solid #ddd;
+    padding: 4px 10px;
+    border-radius: 5px;
+    border: 1px solid #eaeaea;
     color: #333333;
-    font-weight: 600;
+    font-weight: 500;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .noteText {
     font-size: 14px;
-    color: #333;
+    color: #666;
     text-align: center;
     font-style: italic;
+    margin-bottom: 15px;
+    font-family: 'Poppins', sans-serif;
 }
 
 .copyButton {
-    background-color: #2196f3;
+    background-color: #4a90e2;
     color: white;
     border: none;
-    border-radius: 4px;
-    padding: 10px 20px;
+    border-radius: 8px;
+    padding: 12px 20px;
     font-size: 15px;
-    font-weight: bold;
+    font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 10px;
-    width: 90%;
+    transition: all 0.3s ease;
+    width: 100%;
     max-width: 300px;
     display: flex;
     justify-content: center;
     align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .copyButton:hover {
-    background-color: #0d8aee;
+    background-color: #3a80d2;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .copyButton:active {
-    background-color: #0c7cd5;
+    background-color: #3576c5;
+    transform: translateY(0);
 }
 
 /* Media query for mobile devices */
 @media (max-width: 768px) {
+    .formContainer {
+        padding: 15px 10px;
+    }
+    
     .formContainer input,
     .formContainer button,
     .hostButton,
@@ -157,16 +184,15 @@
     .gameInfoBox,
     .copyButton,
     .noteText {
-        width: 95%;
+        width: 100%;
         margin: 5px 0;
     }
     
-    .hostButton {
+    .hostButton, .copyButton {
         margin-top: 15px;
     }
     
-    .privateContainer {
-        margin-left: 0;
-        padding: 10px 0;
+    .gameInfoBox {
+        padding: 15px;
     }
 }
