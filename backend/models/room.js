@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { COLORS, MOVE_TIME } = require('../utils/constants');
+const { COLORS, MOVE_TIME, SAFE_ZONES } = require('../utils/constants');
 const { makeRandomMove } = require('../handlers/handlersFunctions');
 const timeoutManager = require('./timeoutManager.js');
 const PawnSchema = require('./pawn');
@@ -36,6 +36,11 @@ const RoomSchema = new mongoose.Schema({
 });
 
 RoomSchema.methods.beatPawns = function (position, attackingPawnColor) {
+    // Check if the position is a safe zone
+    if (SAFE_ZONES.includes(position)) {
+        return; // Don't beat pawns in safe zones
+    }
+    
     const pawnsOnPosition = this.pawns.filter(pawn => pawn.position === position);
     pawnsOnPosition.forEach(pawn => {
         if (pawn.color !== attackingPawnColor) {
