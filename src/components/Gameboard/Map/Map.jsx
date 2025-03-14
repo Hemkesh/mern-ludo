@@ -109,18 +109,44 @@ const Map = ({ pawns, nowMoving, rolledNumber }) => {
         return touchableArea;
     }, [moveablePawns, player.color, nowMoving, rolledNumber]);
 
-    const handleCanvasClick = event => {
+    // Helper to check if click/touch is on a pawn and handle if needed
+    const handleInteraction = (clientX, clientY) => {
         const canvas = canvasRef.current;
+        if (!canvas) return false;
+        
         const ctx = canvas.getContext('2d');
-        const rect = canvas.getBoundingClientRect(),
-            cursorX = event.clientX - rect.left,
-            cursorY = event.clientY - rect.top;
+        const rect = canvas.getBoundingClientRect();
+        const x = clientX - rect.left;
+        const y = clientY - rect.top;
+        
+        let pawnInteracted = false;
+        
         for (const pawn of pawns) {
-            if (ctx.isPointInPath(pawn.touchableArea, cursorX, cursorY)) {
-                if (canPawnMove(pawn, rolledNumber)) socket.emit('game:move', pawn._id);
+            if (ctx.isPointInPath(pawn.touchableArea, x, y)) {
+                if (canPawnMove(pawn, rolledNumber)) {
+                    socket.emit('game:move', pawn._id);
+                    pawnInteracted = true;
+                }
             }
         }
+        
         setHintPawn(null);
+        return pawnInteracted;
+    };
+
+    const handleCanvasClick = event => {
+        event.preventDefault(); // Prevent default browser action
+        handleInteraction(event.clientX, event.clientY);
+    };
+    
+    // Handle touch events for mobile devices
+    const handleTouchStart = event => {
+        event.preventDefault(); // Prevent default browser action (zooming, scrolling)
+        
+        if (event.touches.length > 0) {
+            const touch = event.touches[0];
+            handleInteraction(touch.clientX, touch.clientY);
+        }
     };
 
     const handleMouseMove = event => {
@@ -131,22 +157,29 @@ const Map = ({ pawns, nowMoving, rolledNumber }) => {
             x = event.clientX - rect.left,
             y = event.clientY - rect.top;
         canvas.style.cursor = 'default';
+        
+        let onPawn = false;
+        
         for (const pawn of pawns) {
             if (
                 ctx.isPointInPath(pawn.touchableArea, x, y) &&
                 player.color === pawn.color &&
                 canPawnMove(pawn, rolledNumber)
             ) {
+                onPawn = true;
+                canvas.style.cursor = 'pointer';
                 const pawnPosition = getPositionAfterMove(pawn, rolledNumber);
                 if (pawnPosition) {
-                    canvas.style.cursor = 'pointer';
                     if (hintPawn && hintPawn.id === pawn._id) return;
                     setHintPawn({ id: pawn._id, position: pawnPosition, color: 'grey' });
                     return;
                 }
             }
         }
-        setHintPawn(null);
+        
+        if (!onPawn) {
+            setHintPawn(null);
+        }
     };
 
     useEffect(() => {
@@ -186,13 +219,28 @@ const Map = ({ pawns, nowMoving, rolledNumber }) => {
     }, [hintPawn, pawns, paintPawn]);
 
     return (
-        <div>
+        <div style={{ 
+            touchAction: 'none', // Prevents browser handling of touch gestures
+            WebkitTapHighlightColor: 'transparent', // Removes tap highlight on iOS
+            WebkitTouchCallout: 'none', // Disables callout
+            WebkitUserSelect: 'none', // Disables selection
+            KhtmlUserSelect: 'none',
+            MozUserSelect: 'none',
+            msUserSelect: 'none',
+            userSelect: 'none' // Disables selection across browsers
+        }}>
             <canvas
                 ref={canvasRef}
                 width={460}
                 height={460}
                 onClick={handleCanvasClick}
                 onMouseMove={handleMouseMove}
+                onTouchStart={handleTouchStart}
+                style={{
+                    WebkitTapHighlightColor: 'rgba(0,0,0,0)', // Removes tap highlight
+                    outline: 'none', // Removes outline on focus
+                    touchAction: 'none' // Disables browser handling of gestures
+                }}
             />
         </div>
     );
