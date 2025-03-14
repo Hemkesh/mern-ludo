@@ -87,7 +87,8 @@
 .gameboardLayout {
     position: relative;
     width: 460px;
-    height: 460px;
+    display: flex;
+    flex-direction: column;
     margin: 50px auto;
 }
 

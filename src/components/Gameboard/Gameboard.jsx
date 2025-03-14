@@ -5,6 +5,7 @@ import useSocketData from '../../hooks/useSocketData';
 import Map from './Map/Map';
 import Navbar from '../Navbar/Navbar';
 import Overlay from '../Overlay/Overlay';
+import GameHeader from './GameHeader/GameHeader';
 import styles from './Gameboard.module.css';
 import trophyImage from '../../images/trophy.webp';
 
@@ -13,6 +14,7 @@ const Gameboard = () => {
     const context = useContext(PlayerDataContext);
     const [pawns, setPawns] = useState([]);
     const [players, setPlayers] = useState([]);
+    const [roomName, setRoomName] = useState('Lone-Shark');
 
     const [rolledNumber, setRolledNumber] = useSocketData('game:roll');
     const [time, setTime] = useState();
@@ -50,6 +52,11 @@ const Gameboard = () => {
             setPawns(data.pawns);
             setTime(data.nextMoveTime);
             setStarted(data.started);
+            
+            // If room has a custom name, update it
+            if (data.name) {
+                setRoomName(data.name);
+            }
         });
 
         socket.on('game:winner', winner => {
@@ -65,6 +72,8 @@ const Gameboard = () => {
         <>
             {pawns.length === 16 ? (
                 <div className={styles.gameContainer}>
+                    <GameHeader isReady={isReady} started={started} roomName={roomName} />
+                    <div style={{ height: '20px' }}></div>
                     <div className={styles.gameboardLayout}>
                         <Navbar
                             players={players}

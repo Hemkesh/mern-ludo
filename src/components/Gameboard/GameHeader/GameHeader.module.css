@@ -1,0 +1,99 @@
+.headerContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 460px;
+    background: linear-gradient(135deg, rgba(45, 46, 151, 0.9) 0%, rgba(35, 93, 173, 0.85) 100%);
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin: 0 auto 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    z-index: 10;
+    box-sizing: border-box;
+}
+
+.gameInfo {
+    display: flex;
+    align-items: center;
+}
+
+.gameTitle {
+    color: white;
+    margin: 0;
+    font-size: 1.2rem;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.actionButtons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.playButton {
+    padding: 8px 16px;
+    background: linear-gradient(to right, #4CAF50, #2E7D32);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(46, 125, 50, 0.3);
+}
+
+.playButton:hover {
+    background: linear-gradient(to right, #2E7D32, #1B5E20);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(46, 125, 50, 0.4);
+}
+
+.leaveButton {
+    padding: 8px 16px;
+    background: linear-gradient(to right, #ff5e62, #ff9966);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(255, 94, 98, 0.3);
+}
+
+.leaveButton:hover {
+    background: linear-gradient(to right, #ff4b4f, #ff8653);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 94, 98, 0.4);
+}
+
+.readyStatus {
+    display: flex;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    padding: 8px 16px;
+    background-color: rgba(46, 125, 50, 0.7);
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(46, 125, 50, 0.3);
+}
+
+.checkmark {
+    color: white;
+    margin-right: 5px;
+    font-size: 1.1rem;
+}
+
+@media (max-width: 600px) {
+    .headerContainer {
+        flex-direction: column;
+        padding: 10px;
+        gap: 10px;
+    }
+    
+    .actionButtons {
+        width: 100%;
+        justify-content: center;
+    }
+}
