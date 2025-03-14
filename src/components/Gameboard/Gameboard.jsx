@@ -55,7 +55,7 @@ const Gameboard = () => {
             
             // If room has a custom name, update it
             if (data.name) {
-                setRoomName(data.name);
+                setRoomName(data.name + ' / ' + data.password);
             }
         });
 

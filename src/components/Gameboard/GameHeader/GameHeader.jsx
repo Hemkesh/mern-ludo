@@ -17,7 +17,7 @@ const GameHeader = ({ isReady, started, roomName }) => {
     return (
         <div className={styles.headerContainer}>
             <div className={styles.gameInfo}>
-                <h2 className={styles.gameTitle}>Game: {roomName || context.roomId}</h2>
+                <h2 className={styles.gameTitle}>{roomName || context.roomId}</h2>
             </div>
             <div className={styles.actionButtons}>
                 {!started && (
