@@ -73,7 +73,7 @@ const NameInput = ({ isRoomPrivate, roomId, room }) => {
     }, [socket]);
 
     return (
-        <div className={styles.container} style={{ height: isRoomPrivate ? '300px' : '250px' }}>
+        <div className={styles.container} style={{ height: isRoomPrivate ? '350px' : '300px' }}>
             <AvatarSelector 
                 selectedAvatar={selectedAvatar}
                 onAvatarSelect={handleAvatarSelect}
