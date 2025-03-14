@@ -16,8 +16,8 @@ const NameContainer = ({ player, time }) => {
 
     return (
         <div className={styles.containerWrapper}>
-            <div className={styles.container} style={{ backgroundColor: player.ready ? player.color : 'lightgrey' }}>
-                <div className={styles.playerInfo}>
+            <div className={styles.container}>
+                <div className={styles.playerInfo} style={{ color: player.ready ? player.color : 'lightgrey' }}>
                     {player.avatar && (
                         <img 
                             src={player.avatar} 
@@ -25,7 +25,7 @@ const NameContainer = ({ player, time }) => {
                             className={styles.avatar}
                         />
                     )}
-                    <p>{player.name}</p>
+                    <p className={styles.playerName}>{player.name}</p>
                 </div>
                 {player.nowMoving ? <AnimatedOverlay time={time} /> : null}
             </div>

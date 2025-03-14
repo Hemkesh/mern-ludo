@@ -17,7 +17,7 @@ const Navbar = ({ players, started, time, isReady, rolledNumber, nowMoving, movi
     };
 
     return (
-        <>
+        <div className={styles.navbarContainer}>
             {players.map((player, index) => (
                 <div 
                     className={`${styles.playerContainer} ${styles[PLAYER_COLORS[index]]} ${PLAYER_COLORS[index] === movingPlayer && started ? styles.activePlayer : ''}`} 
@@ -28,7 +28,7 @@ const Navbar = ({ players, started, time, isReady, rolledNumber, nowMoving, movi
                     {context.color === player.color && !started ? <ReadyButton isReady={isReady} /> : null}
                 </div>
             ))}
-        </>
+        </div>
     );
 };
 

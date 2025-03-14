@@ -1,6 +1,5 @@
 .containerWrapper {
     display: flex;
-    flex-direction: column;
     align-items: center;
     gap: 5px;
 }
@@ -14,18 +13,11 @@
     align-items: center;
     border: none;
     border-radius: 12px;
-    color: white;
     font-weight: bold;
     text-align: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     overflow: hidden;
-    transition: all 0.3s ease;
-    background-size: 200% auto;
-}
-
-.container:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(4px);
 }
 
 .playerInfo {
@@ -40,11 +32,14 @@
 .playerInfo p {
     margin: 0;
     font-size: 1rem;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 100px;
+}
+
+.playerName {
+    font-weight: bold;
 }
 
 .avatar {
@@ -54,14 +49,6 @@
     border: 2px solid rgba(255, 255, 255, 0.8);
     background-color: #ffffff;
     object-fit: cover;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
-}
-
-.avatar:hover {
-    transform: scale(1.1);
-    border-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .leaveButton {
@@ -80,18 +67,7 @@
     font-weight: bold;
     font-size: 14px;
     line-height: 1;
-    transition: all 0.3s ease;
     box-shadow: 0 2px 5px rgba(255, 0, 0, 0.3);
     position: relative;
     z-index: 2;
-}
-
-.leaveButton:hover {
-    background: linear-gradient(135deg, #ff1a1a, #cc0000);
-    transform: scale(1.1) rotate(90deg);
-    box-shadow: 0 4px 8px rgba(255, 0, 0, 0.4);
-}
-
-.leaveButton:active {
-    transform: scale(0.95);
 }

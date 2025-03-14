@@ -64,21 +64,34 @@ const Gameboard = () => {
     return (
         <>
             {pawns.length === 16 ? (
-                <div className='container'>
-                    <Navbar
-                        players={players}
-                        started={started}
-                        time={time}
-                        isReady={isReady}
-                        movingPlayer={movingPlayer}
-                        rolledNumber={rolledNumber}
-                        nowMoving={nowMoving}
-                        ended={winner !== null}
-                    />
-                    <Map pawns={pawns} nowMoving={nowMoving} rolledNumber={rolledNumber} />
+                <div className={styles.gameContainer}>
+                    <div className={styles.gameboardLayout}>
+                        <Navbar
+                            players={players}
+                            started={started}
+                            time={time}
+                            isReady={isReady}
+                            movingPlayer={movingPlayer}
+                            rolledNumber={rolledNumber}
+                            nowMoving={nowMoving}
+                            ended={winner !== null}
+                        />
+                        <div className={styles.mapContainer}>
+                            <Map 
+                                pawns={pawns} 
+                                nowMoving={nowMoving} 
+                                rolledNumber={rolledNumber} 
+                                className={styles.gameMap}
+                            />
+                        </div>
+                    </div>
                 </div>
             ) : (
-                <ReactLoading type='spinningBubbles' color='white' height={667} width={375} />
+                <div className={styles.gameContainer}>
+                    <div className={styles.loadingContainer}>
+                        <ReactLoading type='spinningBubbles' color='white' height={100} width={100} />
+                    </div>
+                </div>
             )}
             {winner ? (
                 <Overlay>

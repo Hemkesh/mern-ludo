@@ -1,20 +1,28 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { SocketContext } from '../../../App';
-import Switch from '@mui/material/Switch';
 import styles from './ReadyButton.module.css';
 
 const ReadyButton = ({ isReady }) => {
     const socket = useContext(SocketContext);
-    const [checked, setChecked] = useState(isReady);
 
-    const handleCheckboxChange = () => {
+    const handleReadyClick = () => {
         socket.emit('player:ready');
-        setChecked(!checked);
     };
+    
     return (
         <div className={styles.container}>
-            <Switch onChange={handleCheckboxChange} checked={checked || false} />
-            <label>{checked ? 'I want to play' : 'Im waiting'}</label>
+            {isReady ? (
+                <div className={styles.readyStatus}>
+                    <span className={styles.checkmark}>✓</span>
+                </div>
+            ) : (
+                <button 
+                    className={styles.readyButton} 
+                    onClick={handleReadyClick}
+                >
+                    Play
+                </button>
+            )}
         </div>
     );
 };
