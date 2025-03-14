@@ -10,7 +10,8 @@ import styles from './JoinServer.module.css';
 
 const JoinServer = ({ onClose }) => {
     const socket = useContext(SocketContext);
-    const [rooms, setRooms] = useSocketData('room:rooms');
+    const [rooms, setRooms] = useSocketData('room:rooms', []);  
+    const [searchQuery, setSearchQuery] = useState('');
 
     const [joining, setJoining] = useState(false);
     const [clickedRoom, setClickedRoom] = useState(null);
@@ -25,6 +26,7 @@ const JoinServer = ({ onClose }) => {
 
     const getRooms = () => {
         setRooms([]);
+        setIsLoading(true);
         socket.emit('room:rooms');
     };
 
@@ -45,6 +47,14 @@ const JoinServer = ({ onClose }) => {
         }
     };
 
+    const handleSearchChange = (e) => {
+        setSearchQuery(e.target.value);
+    };
+
+    const filteredRooms = rooms ? rooms.filter(room => 
+        room.name.toLowerCase().includes(searchQuery.toLowerCase())
+    ) : [];
+
     const ServersTableWithLoading = withLoading(ServersTable);
 
     return (
@@ -55,7 +65,16 @@ const JoinServer = ({ onClose }) => {
             </div>
             
             <div className={styles.joinServerContent}>
-                <div className={styles.refreshContainer}>
+                <div className={styles.controlsContainer}>
+                    <div className={styles.searchContainer}>
+                        <input 
+                            type="text" 
+                            placeholder="Search games..." 
+                            className={styles.searchInput}
+                            value={searchQuery}
+                            onChange={handleSearchChange}
+                        />
+                    </div>
                     <button className={styles.refreshButton} onClick={getRooms}>
                         <img src={refresh} alt='refresh' />
                         Refresh Games
@@ -65,7 +84,7 @@ const JoinServer = ({ onClose }) => {
                 <div className={styles.serversTableContainer}>
                     <ServersTableWithLoading
                         isLoading={isLoading}
-                        rooms={rooms}
+                        rooms={filteredRooms}
                         handleJoinClick={handleJoinClick}
                     />
                 </div>
