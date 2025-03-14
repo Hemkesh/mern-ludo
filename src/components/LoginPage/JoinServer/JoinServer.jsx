@@ -3,13 +3,12 @@ import { SocketContext } from '../../../App';
 import refresh from '../../../images/login-page/refresh.png';
 import NameInput from '../NameInput/NameInput';
 import Overlay from '../../Overlay/Overlay';
-import WindowLayout from '../WindowLayout/WindowLayout';
 import ServersTable from './ServersTable/ServersTable';
 import withLoading from '../../HOC/withLoading';
 import useSocketData from '../../../hooks/useSocketData';
 import styles from './JoinServer.module.css';
 
-const JoinServer = () => {
+const JoinServer = ({ onClose }) => {
     const socket = useContext(SocketContext);
     const [rooms, setRooms] = useSocketData('room:rooms');
 
@@ -34,33 +33,55 @@ const JoinServer = () => {
         setJoining(true);
     };
 
+    const handleJoinComplete = () => {
+        if (onClose) {
+            onClose();
+        }
+    };
+
+    const handleClose = () => {
+        if (onClose) {
+            onClose();
+        }
+    };
+
     const ServersTableWithLoading = withLoading(ServersTable);
 
     return (
-        <>
-            <WindowLayout
-                title='Join A Game'
-                titleComponent={
-                    <div className={styles.refresh}>
-                        <img src={refresh} alt='refresh' onClick={getRooms} />
-                    </div>
-                }
-                content={
-                    <div className={styles.serversTableContainer}>
-                        <ServersTableWithLoading
-                            isLoading={isLoading}
-                            rooms={rooms}
-                            handleJoinClick={handleJoinClick}
-                        />
-                    </div>
-                }
-            />
+        <div className={styles.joinServerPopup}>
+            <div className={styles.joinServerHeader}>
+                <h2>Join A Game</h2>
+                <button className={styles.closeButton} onClick={handleClose}>×</button>
+            </div>
+            
+            <div className={styles.joinServerContent}>
+                <div className={styles.refreshContainer}>
+                    <button className={styles.refreshButton} onClick={getRooms}>
+                        <img src={refresh} alt='refresh' />
+                        Refresh Games
+                    </button>
+                </div>
+                
+                <div className={styles.serversTableContainer}>
+                    <ServersTableWithLoading
+                        isLoading={isLoading}
+                        rooms={rooms}
+                        handleJoinClick={handleJoinClick}
+                    />
+                </div>
+            </div>
+            
             {joining ? (
                 <Overlay handleOverlayClose={() => setJoining(false)}>
-                    <NameInput roomId={clickedRoom._id} isRoomPrivate={clickedRoom.private} room={clickedRoom} />
+                    <NameInput 
+                        roomId={clickedRoom._id} 
+                        isRoomPrivate={clickedRoom.private} 
+                        room={clickedRoom}
+                        onJoinComplete={handleJoinComplete} 
+                    />
                 </Overlay>
             ) : null}
-        </>
+        </div>
     );
 };
 export default JoinServer;

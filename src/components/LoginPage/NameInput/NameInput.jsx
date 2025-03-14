@@ -5,7 +5,7 @@ import useKeyPress from '../../../hooks/useKeyPress';
 import AvatarSelector from '../AvatarSelector/AvatarSelector';
 import styles from './NameInput.module.css';
 
-const NameInput = ({ isRoomPrivate, roomId, room }) => {
+const NameInput = ({ isRoomPrivate, roomId, room, onJoinComplete }) => {
     const socket = useContext(SocketContext);
     
     // Get saved nickname and avatar from localStorage
@@ -62,6 +62,11 @@ const NameInput = ({ isRoomPrivate, roomId, room }) => {
             roomId: roomId,
             avatar: selectedAvatar
         });
+
+        // Call the onJoinComplete callback if provided
+        if (onJoinComplete) {
+            onJoinComplete();
+        }
     };
 
     useKeyPress('Enter', handleButtonClick);
@@ -70,7 +75,18 @@ const NameInput = ({ isRoomPrivate, roomId, room }) => {
         socket.on('error:wrongPassword', () => {
             setIsPasswordWrong(true);
         });
-    }, [socket]);
+        
+        // Add a listener for successful login to trigger onJoinComplete
+        socket.on('player:login', () => {
+            if (onJoinComplete) {
+                onJoinComplete();
+            }
+        });
+        
+        return () => {
+            socket.off('player:login');
+        };
+    }, [socket, onJoinComplete]);
 
     return (
         <div className={styles.container} style={{ height: isRoomPrivate ? '350px' : '300px' }}>
