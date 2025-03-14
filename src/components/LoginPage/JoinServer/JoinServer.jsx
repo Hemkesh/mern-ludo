@@ -39,7 +39,7 @@ const JoinServer = () => {
     return (
         <>
             <WindowLayout
-                title='Join A Server'
+                title='Join A Game'
                 titleComponent={
                     <div className={styles.refresh}>
                         <img src={refresh} alt='refresh' onClick={getRooms} />

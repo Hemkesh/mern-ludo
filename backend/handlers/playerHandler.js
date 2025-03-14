@@ -30,7 +30,7 @@ module.exports = socket => {
     };
 
     const addPlayerToExistingRoom = async (room, data) => {
-        room.addPlayer(data.name);
+        room.addPlayer(data.name, null, data.avatar);
         if (room.isFull()) {
             room.startGame();
         }

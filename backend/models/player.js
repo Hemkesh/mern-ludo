@@ -6,6 +6,7 @@ const PlayerSchema = new Schema({
     sessionID: String,
     name: String,
     color: String,
+    avatar: { type: String, default: 'https://cdn.jsdelivr.net/gh/alohe/avatars/png/toon_1.png' },
     ready: { type: Boolean, default: false },
     nowMoving: { type: Boolean, default: false },
 });

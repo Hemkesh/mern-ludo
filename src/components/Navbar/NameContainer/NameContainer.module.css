@@ -19,6 +19,22 @@
     text-align: center;
 }
 
+.playerInfo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 10px;
+}
+
+.avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid white;
+    background-color: #ffffff;
+}
+
 .leaveButton {
     background-color: #ff4d4d;
     color: white;

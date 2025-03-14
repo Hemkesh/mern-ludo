@@ -125,13 +125,14 @@ RoomSchema.methods.getPlayer = function (playerId) {
     return this.players.find(player => player._id.toString() === playerId.toString());
 };
 
-RoomSchema.methods.addPlayer = function (name, id) {
+RoomSchema.methods.addPlayer = function (name, id, avatar = 'https://cdn.jsdelivr.net/gh/alohe/avatars/png/toon_1.png') {
     if (this.full) return;
     this.players.push({
         sessionID: id,
         name: name,
         ready: false,
         color: COLORS[this.players.length],
+        avatar: avatar
     });
 };
 

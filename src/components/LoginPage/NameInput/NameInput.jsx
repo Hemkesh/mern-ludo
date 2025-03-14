@@ -2,11 +2,26 @@ import React, { useState, useContext, useEffect } from 'react';
 import { SocketContext } from '../../../App';
 import useInput from '../../../hooks/useInput';
 import useKeyPress from '../../../hooks/useKeyPress';
+import AvatarSelector from '../AvatarSelector/AvatarSelector';
 import styles from './NameInput.module.css';
 
 const NameInput = ({ isRoomPrivate, roomId, room }) => {
     const socket = useContext(SocketContext);
-    const nickname = useInput('');
+    
+    // Get saved nickname and avatar from localStorage
+    const getSavedUserData = () => {
+        try {
+            const userData = JSON.parse(localStorage.getItem('userData'));
+            return userData || { nickname: '', avatar: 'https://cdn.jsdelivr.net/gh/alohe/avatars/png/toon_1.png' };
+        } catch (error) {
+            console.error('Error parsing user data:', error);
+            return { nickname: '', avatar: 'https://cdn.jsdelivr.net/gh/alohe/avatars/png/toon_1.png' };
+        }
+    };
+    
+    const userData = getSavedUserData();
+    const nickname = useInput(userData.nickname);
+    const [selectedAvatar, setSelectedAvatar] = useState(userData.avatar);
     
     // Get the created game info from localStorage
     const getCreatedGamePassword = () => {
@@ -28,8 +43,25 @@ const NameInput = ({ isRoomPrivate, roomId, room }) => {
     const password = useInput(initialPassword);
     const [isPasswordWrong, setIsPasswordWrong] = useState(false);
 
+    const handleAvatarSelect = (avatar) => {
+        setSelectedAvatar(avatar);
+    };
+
     const handleButtonClick = () => {
-        socket.emit('player:login', { name: nickname.value, password: password.value, roomId: roomId });
+        if (nickname.value.trim() === '') return;
+        
+        // Save user data to localStorage
+        localStorage.setItem('userData', JSON.stringify({
+            nickname: nickname.value,
+            avatar: selectedAvatar
+        }));
+        
+        socket.emit('player:login', { 
+            name: nickname.value, 
+            password: password.value, 
+            roomId: roomId,
+            avatar: selectedAvatar
+        });
     };
 
     useKeyPress('Enter', handleButtonClick);
@@ -41,7 +73,11 @@ const NameInput = ({ isRoomPrivate, roomId, room }) => {
     }, [socket]);
 
     return (
-        <div className={styles.container} style={{ height: isRoomPrivate ? '100px' : '50px' }}>
+        <div className={styles.container} style={{ height: isRoomPrivate ? '300px' : '250px' }}>
+            <AvatarSelector 
+                selectedAvatar={selectedAvatar}
+                onAvatarSelect={handleAvatarSelect}
+            />
             <input placeholder='Nickname' type='text' {...nickname} />
             {isRoomPrivate ? (
                 <input

@@ -17,7 +17,16 @@ const NameContainer = ({ player, time }) => {
     return (
         <div className={styles.containerWrapper}>
             <div className={styles.container} style={{ backgroundColor: player.ready ? player.color : 'lightgrey' }}>
-                <p>{player.name}</p>
+                <div className={styles.playerInfo}>
+                    {player.avatar && (
+                        <img 
+                            src={player.avatar} 
+                            alt={`${player.name}'s avatar`} 
+                            className={styles.avatar}
+                        />
+                    )}
+                    <p>{player.name}</p>
+                </div>
                 {player.nowMoving ? <AnimatedOverlay time={time} /> : null}
             </div>
             {context && context.color === player.color ? 
