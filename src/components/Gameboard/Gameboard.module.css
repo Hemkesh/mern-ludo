@@ -2,19 +2,76 @@
     display: flex;
     flex-direction: column;
     padding: 40px;
-    width: 300px;
-    height: 250px;
-    background: radial-gradient(circle, rgba(0, 138, 255, 1) 5%, rgba(9, 9, 121, 1) 81%);
+    width: 350px;
+    height: 300px;
+    background: linear-gradient(135deg, rgba(45, 46, 151, 0.9) 0%, rgba(35, 93, 173, 0.85) 100%);
     color: white;
-    border: 1px solid white;
-    border-radius: 8px;
+    border: none;
+    border-radius: 16px;
     margin: 20px;
     z-index: 2;
     justify-content: center;
     text-align: center;
     cursor: default;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    animation: fadeIn 0.5s ease-in-out;
 }
+
+.winnerContainer > img {
+    width: 120px;
+    height: auto;
+    margin: 0 auto 20px;
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.7));
+    animation: bounce 2s infinite;
+}
+
+.winnerContainer > h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+}
+
 .winnerContainer > button {
     align-self: center;
     width: 200px;
+    padding: 12px 0;
+    background: linear-gradient(to right, #ff9966, #ff5e62);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 94, 98, 0.4);
+    margin-top: 10px;
+}
+
+.winnerContainer > button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(255, 94, 98, 0.6);
+}
+
+.winnerContainer > button:active {
+    transform: translateY(1px);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
 }

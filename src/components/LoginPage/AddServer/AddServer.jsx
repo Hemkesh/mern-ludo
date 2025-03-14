@@ -147,7 +147,7 @@ const AddServer = () => {
                     <h3 className={styles.successTitle}>Game Created!</h3>
                     <div className={styles.gameInfoBox}>
                         <div className={styles.infoRow}>
-                            <span className={styles.infoLabel}>Server Name:</span>
+                            <span className={styles.infoLabel}>Game Name:</span>
                             <span className={styles.infoValue}>{generatedInfo.name}</span>
                         </div>
                         <div className={styles.infoRow}>
