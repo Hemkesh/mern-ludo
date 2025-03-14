@@ -10,10 +10,10 @@ module.exports = socket => {
         if (room.winner) return;
         const pawn = room.getPawn(pawnId);
         if (isMoveValid(req.session, pawn, room)) {
-            const newPositionOfMovedPawn = pawn.getPositionAfterMove(room.rolledNumber);
-            room.changePositionOfPawn(pawn, newPositionOfMovedPawn);
-            room.beatPawns(newPositionOfMovedPawn, req.session.color);
-            room.changeMovingPlayer();
+            // Use the room's movePawn method which now handles 
+            // the "roll again on 6" logic internally
+            room.movePawn(pawn);
+            
             const winner = room.getWinner();
             if (winner) {
                 room.endGame(winner);

@@ -65,10 +65,23 @@ RoomSchema.methods.changeMovingPlayer = function () {
     timeoutManager.set(makeRandomMove, MOVE_TIME, this._id.toString());
 };
 
+RoomSchema.methods.resetRollState = function() {
+    // Reset the rolled number to allow rolling again, but keep the same player's turn
+    this.rolledNumber = null;
+    this.nextMoveTime = Date.now() + MOVE_TIME;
+    timeoutManager.clear(this._id.toString());
+    timeoutManager.set(makeRandomMove, MOVE_TIME, this._id.toString());
+};
+
 RoomSchema.methods.movePawn = function (pawn) {
     const newPositionOfMovedPawn = pawn.getPositionAfterMove(this.rolledNumber);
     this.changePositionOfPawn(pawn, newPositionOfMovedPawn);
     this.beatPawns(newPositionOfMovedPawn, pawn.color);
+    if (this.rolledNumber === 6) {
+        this.resetRollState();
+    } else {
+        this.changeMovingPlayer();
+    }
 };
 
 RoomSchema.methods.getPawnsThatCanMove = function () {

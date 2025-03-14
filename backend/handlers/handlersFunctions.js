@@ -17,9 +17,13 @@ const makeRandomMove = async roomId => {
     const pawnsThatCanMove = room.getPawnsThatCanMove();
     if (pawnsThatCanMove.length > 0) {
         const randomPawn = pawnsThatCanMove[Math.floor(Math.random() * pawnsThatCanMove.length)];
+        // Use room's movePawn method which now handles the "roll again on 6" logic internally
         room.movePawn(randomPawn);
+    } else {
+        // If no pawns can move, change the player's turn
+        room.changeMovingPlayer();
     }
-    room.changeMovingPlayer();
+    
     const winner = room.getWinner();
     if (winner) {
         room.endGame(winner);
