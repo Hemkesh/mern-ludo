@@ -36,75 +36,68 @@
     box-shadow: none;
 }
 
-/* Game created success styles */
 .gameCreatedContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 20px;
+    max-width: 400px;
     width: 100%;
-    max-width: 320px;
-    padding: 15px;
+    border-radius: 12px;
     background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    font-family: 'Poppins', sans-serif;
 }
 
 .successTitle {
-    color: #4a90e2;
-    margin-bottom: 15px;
-    font-family: 'Poppins', sans-serif;
+    color: #2c3e50;
+    margin: 0 0 15px 0;
+    font-size: 22px;
     font-weight: 600;
 }
 
 .gameInfoBox {
     background-color: #f9f9f9;
     border: 1px solid #eaeaea;
-    border-radius: 10px;
-    padding: 20px;
+    border-radius: 8px;
+    padding: 15px;
     width: 100%;
-    max-width: 260px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    margin-bottom: 15px;
 }
 
 .infoRow {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 12px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid #eaeaea;
+    margin-bottom: 10px;
+    font-size: 14px;
 }
 
 .infoRow:last-child {
     margin-bottom: 0;
-    padding-bottom: 0;
-    border-bottom: none;
 }
 
 .infoLabel {
     font-weight: 600;
-    color: #2c3e50;
-    font-family: 'Poppins', sans-serif;
+    color: #666;
 }
 
 .infoValue {
-    font-family: 'Poppins', sans-serif;
-    background-color: #ffffff;
-    padding: 4px 10px;
-    border-radius: 5px;
-    border: 1px solid #eaeaea;
-    color: #333333;
+    color: #333;
     font-weight: 500;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .noteText {
     font-size: 14px;
     color: #666;
+    margin-bottom: 20px;
     text-align: center;
-    font-style: italic;
-    margin-bottom: 15px;
-    font-family: 'Poppins', sans-serif;
+}
+
+.buttonsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
 }
 
 .copyButton {
@@ -112,17 +105,13 @@
     color: white;
     border: none;
     border-radius: 8px;
-    padding: 12px 20px;
-    font-size: 15px;
+    padding: 10px 20px;
+    font-size: 14px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
     width: 100%;
-    max-width: 260px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-family: 'Poppins', sans-serif;
 }
 
 .copyButton:hover {
@@ -136,10 +125,39 @@
     transform: translateY(0);
 }
 
+.joinCreatedButton {
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    font-family: 'Poppins', sans-serif;
+}
+
+.joinCreatedButton:hover {
+    background-color: #27ae60;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.joinCreatedButton:active {
+    background-color: #219653;
+    transform: translateY(0);
+}
+
 /* Media query for mobile devices */
 @media (max-width: 768px) {
-    .gameInfoBox,
-    .copyButton {
-        width: 100%;
+    .gameCreatedContainer {
+        padding: 15px;
+        max-width: 90%;
+    }
+
+    .hostButton, .copyButton, .joinCreatedButton {
+        padding: 12px 15px;
     }
 }

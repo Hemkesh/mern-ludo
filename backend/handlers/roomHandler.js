@@ -22,7 +22,10 @@ module.exports = socket => {
     };
 
     const handleCreateRoom = async data => {
-        await createNewRoom(data);
+        const newRoom = await createNewRoom(data);
+        // Send the created room data back to the client
+        socket.emit('room:create', { _id: newRoom._id, name: newRoom.name });
+        // Also send updated room list
         sendToOnePlayerRooms(socket.id, await getRooms());
     };
 

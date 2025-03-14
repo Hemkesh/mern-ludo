@@ -1,5 +1,7 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { SocketContext } from '../../../App';
+import NameInput from '../NameInput/NameInput';
+import Overlay from '../../Overlay/Overlay';
 import styles from './AddServer.module.css';
 
 // Arrays of common English words for random server name generation
@@ -9,8 +11,10 @@ const secondWords = ['Dragon', 'Tiger', 'Eagle', 'Lion', 'Falcon', 'Wolf', 'Bear
 const AddServer = () => {
     const socket = useContext(SocketContext);
     const [generatedInfo, setGeneratedInfo] = useState(null);
+    const [createdRoomId, setCreatedRoomId] = useState(null);
     const [isCreating, setIsCreating] = useState(false);
     const [copyStatus, setCopyStatus] = useState('');
+    const [showJoinPopup, setShowJoinPopup] = useState(false);
     
     // Function to generate a random server name (two words with a hyphen)
     const generateServerName = () => {
@@ -23,6 +27,19 @@ const AddServer = () => {
     const generatePassword = () => {
         return Math.floor(100000 + Math.random() * 900000).toString();
     };
+
+    // Listen for room creation response to get the actual room ID
+    useEffect(() => {
+        socket.on('room:create', (data) => {
+            if (data && data._id) {
+                setCreatedRoomId(data._id);
+            }
+        });
+        
+        return () => {
+            socket.off('room:create');
+        };
+    }, [socket]);
 
     const handleButtonClick = e => {
         e.preventDefault();
@@ -100,6 +117,21 @@ const AddServer = () => {
         }
     };
 
+    const handleJoinClick = () => {
+        setShowJoinPopup(true);
+    };
+
+    const handleCloseJoinPopup = () => {
+        setShowJoinPopup(false);
+    };
+
+    // Instead of using the room name as ID, check if we have a valid ObjectId
+    const roomData = generatedInfo && createdRoomId ? {
+        _id: createdRoomId, // Use the actual MongoDB ObjectId
+        name: generatedInfo.name,
+        private: true
+    } : null;
+
     return (
         <div className={styles.hostGameContainer}>
             {!generatedInfo ? (
@@ -126,13 +158,34 @@ const AddServer = () => {
                     <p className={styles.noteText}>
                         Share this information with players who want to join your game.
                     </p>
-                    <button 
-                        onClick={handleCopyInvite} 
-                        className={styles.copyButton}
-                    >
-                        {copyStatus || 'Copy Invite Link'}
-                    </button>
+                    <div className={styles.buttonsContainer}>
+                        <button 
+                            onClick={handleCopyInvite} 
+                            className={styles.copyButton}
+                        >
+                            {copyStatus || 'Copy Invite Link'}
+                        </button>
+                        {createdRoomId && (
+                            <button 
+                                onClick={handleJoinClick} 
+                                className={styles.joinCreatedButton}
+                            >
+                                Join {generatedInfo.name}
+                            </button>
+                        )}
+                    </div>
                 </div>
+            )}
+
+            {showJoinPopup && roomData && (
+                <Overlay handleOverlayClose={handleCloseJoinPopup}>
+                    <NameInput 
+                        roomId={roomData._id}
+                        isRoomPrivate={true} 
+                        room={roomData}
+                        onJoinComplete={handleCloseJoinPopup}
+                    />
+                </Overlay>
             )}
         </div>
     );
