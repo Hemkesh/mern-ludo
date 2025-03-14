@@ -11,6 +11,8 @@ const Map = ({ pawns, nowMoving, rolledNumber }) => {
     const player = useContext(PlayerDataContext);
     const socket = useContext(SocketContext);
     const canvasRef = useRef(null);
+    const containerRef = useRef(null);
+    const [canvasSize, setCanvasSize] = useState(460);
 
     const [hintPawn, setHintPawn] = useState();
     const [moveablePawns, setMoveablePawns] = useState([]);
@@ -26,18 +28,47 @@ const Map = ({ pawns, nowMoving, rolledNumber }) => {
         }
     }, [rolledNumber, pawns, player.color]);
 
+    // Resize canvas based on screen size
+    useEffect(() => {
+        const handleResize = () => {
+            if (containerRef.current) {
+                // Get available width for the canvas (accounting for margins/padding)
+                const containerWidth = Math.min(
+                    containerRef.current.parentElement.clientWidth - 20, // 20px for padding
+                    460 // Max size
+                );
+                setCanvasSize(containerWidth);
+            }
+        };
+
+        // Initial size calculation
+        handleResize();
+        
+        // Listen for window resize
+        window.addEventListener('resize', handleResize);
+        
+        // Clean up
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     // Wrap paintPawn in useCallback to memoize it
     const paintPawn = useCallback((context, pawn, pawnIndex, pawnsAtSamePosition) => {
-        const { x, y } = positionMapCoords[pawn.position];
+        // Get original coordinates based on 460px board
+        const { x: originalX, y: originalY } = positionMapCoords[pawn.position];
+        
+        // Scale coordinates based on current canvas size
+        const scaleRatio = canvasSize / 460;
+        const x = originalX * scaleRatio;
+        const y = originalY * scaleRatio;
         
         // Calculate offset if multiple pawns on same position
         let offsetX = 0;
         let offsetY = 0;
-        let pawnSize = 35; // Default pawn size
+        let pawnSize = 35 * scaleRatio; // Scale pawn size based on canvas size
         
         if (pawnsAtSamePosition > 1) {
             // Make pawns smaller if multiple on same square
-            pawnSize = Math.max(22, 35 - (pawnsAtSamePosition * 3));
+            pawnSize = Math.max(22 * scaleRatio, (35 - (pawnsAtSamePosition * 3)) * scaleRatio);
             
             // Create a grid pattern for positioning:
             // 1 pawn: center
@@ -107,7 +138,7 @@ const Map = ({ pawns, nowMoving, rolledNumber }) => {
         };
         
         return touchableArea;
-    }, [moveablePawns, player.color, nowMoving, rolledNumber]);
+    }, [moveablePawns, player.color, nowMoving, rolledNumber, canvasSize]);
 
     // Helper to check if click/touch is on a pawn and handle if needed
     const handleInteraction = (clientX, clientY) => {
@@ -116,8 +147,14 @@ const Map = ({ pawns, nowMoving, rolledNumber }) => {
         
         const ctx = canvas.getContext('2d');
         const rect = canvas.getBoundingClientRect();
-        const x = clientX - rect.left;
-        const y = clientY - rect.top;
+        
+        // Calculate scale ratio between actual canvas dimensions and displayed size
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        
+        // Apply scaling to get the correct coordinates on the original canvas
+        const x = (clientX - rect.left) * scaleX;
+        const y = (clientY - rect.top) * scaleY;
         
         let pawnInteracted = false;
         
@@ -153,9 +190,16 @@ const Map = ({ pawns, nowMoving, rolledNumber }) => {
         if (!nowMoving || !rolledNumber) return;
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
-        const rect = canvas.getBoundingClientRect(),
-            x = event.clientX - rect.left,
-            y = event.clientY - rect.top;
+        const rect = canvas.getBoundingClientRect();
+        
+        // Calculate scale ratio between actual canvas dimensions and displayed size
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        
+        // Apply scaling to get the correct coordinates on the original canvas
+        const x = (event.clientX - rect.left) * scaleX;
+        const y = (event.clientY - rect.top) * scaleY;
+        
         canvas.style.cursor = 'default';
         
         let onPawn = false;
@@ -185,11 +229,18 @@ const Map = ({ pawns, nowMoving, rolledNumber }) => {
     useEffect(() => {
         const rerenderCanvas = () => {
             const canvas = canvasRef.current;
+            if (!canvas) return;
+            
             const ctx = canvas.getContext('2d');
             const image = new Image();
             image.src = mapImage;
+            
             image.onload = function () {
-                ctx.drawImage(image, 0, 0);
+                // Clear canvas first
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Draw board scaled to fit canvas size
+                ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
                 
                 // Group pawns by position
                 const positionMap = {};
@@ -219,7 +270,7 @@ const Map = ({ pawns, nowMoving, rolledNumber }) => {
     }, [hintPawn, pawns, paintPawn]);
 
     return (
-        <div style={{ 
+        <div ref={containerRef} style={{ 
             touchAction: 'none', // Prevents browser handling of touch gestures
             WebkitTapHighlightColor: 'transparent', // Removes tap highlight on iOS
             WebkitTouchCallout: 'none', // Disables callout
@@ -227,19 +278,24 @@ const Map = ({ pawns, nowMoving, rolledNumber }) => {
             KhtmlUserSelect: 'none',
             MozUserSelect: 'none',
             msUserSelect: 'none',
-            userSelect: 'none' // Disables selection across browsers
+            userSelect: 'none', // Disables selection across browsers
+            maxWidth: '100%', // Ensures container doesn't exceed viewport width
+            display: 'flex',
+            justifyContent: 'center'
         }}>
             <canvas
                 ref={canvasRef}
-                width={460}
-                height={460}
+                width={canvasSize}
+                height={canvasSize}
                 onClick={handleCanvasClick}
                 onMouseMove={handleMouseMove}
                 onTouchStart={handleTouchStart}
                 style={{
                     WebkitTapHighlightColor: 'rgba(0,0,0,0)', // Removes tap highlight
                     outline: 'none', // Removes outline on focus
-                    touchAction: 'none' // Disables browser handling of gestures
+                    touchAction: 'none', // Disables browser handling of gestures
+                    maxWidth: '100%', // Make canvas responsive
+                    height: 'auto' // Maintain aspect ratio
                 }}
             />
         </div>
