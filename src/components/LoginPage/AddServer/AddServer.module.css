@@ -5,6 +5,7 @@
     justify-content: center;
     width: 100%;
     box-sizing: border-box;
+    padding: 15px 0;
 }
 
 .formContainer input {
@@ -15,6 +16,37 @@
 
 .formContainer button {
     margin-top: 10px;
+    width: 90%;
+    max-width: 300px;
+}
+
+.hostButton {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 15px;
+}
+
+.hostButton:hover {
+    background-color: #45a049;
+}
+
+.hostButton:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.infoText {
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+    margin: 10px 0;
     width: 90%;
     max-width: 300px;
 }
@@ -30,12 +62,107 @@
     box-sizing: border-box;
 }
 
+/* Game created success styles */
+.gameCreatedContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.successTitle {
+    color: #4caf50;
+    margin-bottom: 15px;
+}
+
+.gameInfoBox {
+    background-color: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 15px;
+    width: 90%;
+    max-width: 300px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.infoRow {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.infoRow:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.infoLabel {
+    font-weight: bold;
+    color: #333;
+}
+
+.infoValue {
+    font-family: monospace;
+    background-color: #ffffff;
+    padding: 3px 8px;
+    border-radius: 3px;
+    border: 1px solid #ddd;
+    color: #333333;
+    font-weight: 600;
+}
+
+.noteText {
+    font-size: 14px;
+    color: #333;
+    text-align: center;
+    font-style: italic;
+}
+
+.copyButton {
+    background-color: #2196f3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+    width: 90%;
+    max-width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.copyButton:hover {
+    background-color: #0d8aee;
+}
+
+.copyButton:active {
+    background-color: #0c7cd5;
+}
+
 /* Media query for mobile devices */
 @media (max-width: 768px) {
     .formContainer input,
-    .formContainer button {
+    .formContainer button,
+    .hostButton,
+    .infoText,
+    .gameInfoBox,
+    .copyButton,
+    .noteText {
         width: 95%;
         margin: 5px 0;
+    }
+    
+    .hostButton {
+        margin-top: 15px;
     }
     
     .privateContainer {
